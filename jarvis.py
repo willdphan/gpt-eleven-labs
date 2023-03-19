@@ -1,10 +1,8 @@
 import gradio as gr
-import openai, subprocess
-from dotenv import load_dotenv
-import os
+import openai, config, subprocess
 
 # Initialize OpenAI API
-openai.api_key = os.getenv("OPENAI_API_KEY")
+openai.api_key = config.OPENAI_API_KEY
 
 messages = [{"role": "system", "content": 'You are a AI assistant named Jarvis from the movie Ironman. Respond to all input in 25 words or less.'}]
 
