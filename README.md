@@ -15,11 +15,11 @@ Or just use this command to install everything for you.
 
 ## Usage
 
-Startup the Gradio interface with the command below. On the Gradio interface, simply record some audio acknowledging Jarvis. Jarvis (using OpenAI's whisper model) with a response.
+Startup the Gradio interface with the command below. On the Gradio interface, simply record some audio acknowledging Jarvis. Jarvis (using OpenAI's whisper model) will provide a response.
 
     python3 genius.py
 
-The repsonse will be in audio format and will also be printed on the interface.
+Javis's response will be in audio format and will be printed on the interface.
 
 ## License
 
