@@ -1,32 +1,44 @@
 import gradio as gr
-import openai, config, subprocess
+import requests
+import tempfile
+import os
 
-# Initialize OpenAI API
-openai.api_key = config.OPENAI_API_KEY
+def text_to_speech(text, voice_id, api_key):
+    url = f"https://api.elevenlabs.io/v1/text-to-speech/{voice_id}"
+    headers = {
+        "xi-api-key": "e6544386341418fa400345857ec819cc",
+        "Content-Type": "application/json",
+        "accept": "audio/mpeg"
+    }
+    data = {
+        "text": text,
+        "voice_settings": {
+            "stability": 0,
+            "similarity_boost": 0
+        }
+    }
+    response = requests.post(url, headers=headers, json=data)
+    with tempfile.NamedTemporaryFile(delete=False) as f:
+        f.write(response.content)
+        filepath = f.name
+    return filepath
 
-messages = [{"role": "system", "content": 'You are a AI assistant named Jarvis from the movie Ironman. Respond to all input in 25 words or less.'}]
+def delete_temp_file(filepath):
+    os.remove(filepath)
 
-def transcribe(audio):
-    global messages
+inputs = [
+    gr.inputs.Textbox(label="Text"),
+    gr.inputs.Textbox(label="Voice ID"),
+    gr.inputs.Textbox(label="API Key")
+]
 
-    audio_file = open(audio, "rb")
-    transcript = openai.Audio.transcribe("whisper-1", audio_file)
+output = gr.outputs.Audio(type="numpy")
 
-    messages.append({"role": "user", "content": transcript["text"]})
+title = "Eleven Labs Text to Speech"
+description = "Convert text to speech using the Eleven Labs API"
+examples = [
+    ["Hello, how are you?", "voice_id_here", "api_key_here"],
+    ["Can you play some music?", "voice_id_here", "api_key_here"]
+]
 
-    response = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages)
-
-    system_message = response["choices"][0]["message"]
-    messages.append(system_message)
-
-    subprocess.call(["say", system_message['content']])
-
-    chat_transcript = ""
-    for message in messages:
-        if message['role'] != 'system':
-            chat_transcript += message['role'] + ": " + message['content'] + "\n\n"
-
-    return chat_transcript
-
-ui = gr.Interface(fn=transcribe, inputs=gr.Audio(source="microphone", type="filepath"), outputs="text").launch()
-ui.launch()
+gr.Interface(fn=text_to_speech, inputs=inputs, outputs=output, title=title, description=description, examples=examples, live=False, capture_session=True, on_close=delete_temp_file).launch()
