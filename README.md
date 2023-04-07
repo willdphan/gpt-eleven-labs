@@ -1,25 +1,21 @@
-# Jarvis, AI Personal Asistant
-
-This repository uses `OpenAI`'s Whisper and `Gradio` to generate audio responses from a personal assistant named Genie.
+# Eleven Labs Text to Speech
+This repository provides a Python script for converting text to speech using the Eleven Labs API. The script takes in text input, along with the user's Eleven Labs voice ID and API key, and returns the corresponding audio output.
 
 ## Installation
+To install the necessary packages, use the command below:
 
-To install `Gradio` and `OpenAI`, use the commands below.
-
-    pip3 install openai
-    pip3 install gradio
-
-Or just use this command to install everything for you.
-
-    pip3 install -r requirements.txt
+## Copy code
+    pip3 install gradio requests
 
 ## Usage
-
-Startup the Gradio interface with the command below. On the Gradio interface, simply record some audio acknowledging Jarvis. Jarvis (using OpenAI's whisper model) will provide a response.
+Run the script with the following command:
 
     python3 genius.py
 
-Javis's response will be in audio format and will be printed on the interface.
+This will open a Gradio interface where you can input the desired text, voice ID, and API key. The output will be audio corresponding to the input text.
+
+Note: You need to have an account with Eleven Labs to obtain an API key and a voice ID.
+
 
 ## License
 
